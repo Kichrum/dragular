@@ -289,7 +289,7 @@ By default, spilling an element outside of any containers will move the element 
 
 ### `options.direction`
 
-When an element is dropped onto a container, it'll be placed near the point where the mouse was released. If the `direction` is `'vertical'`, the Y axis will be considered. Otherwise, if the `direction` is `'horizontal'`, the X axis will be considered. Default is automatic, where simple logic determines direction by comparison of dimensions of parent and its first child.
+When an element is dropped onto a container, it'll be placed near the point where the mouse was released. If the `direction` is `'vertical'`, the Y axis will be considered. If the `direction` is `'horizontal'`, the X axis will be considered, and if it's `'mixed'` both axes will be considered. Default is automatic, where simple logic determines direction by comparison of dimensions of parent and its first child.
 
 ### `options.scope`
 

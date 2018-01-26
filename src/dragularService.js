@@ -751,6 +751,7 @@ var dragularService = function ( $rootScope, $compile ) {
 
 		function getReference( dropTarget, target, x, y ) { // watch performance - running each move several times!
 			var horizontal = o.direction === 'horizontal';
+			var mixed = o.direction === 'mixed';
 			return target !== dropTarget ? inside() : outside();
 
 			function outside() { // slower, but able to figure out any position
@@ -762,7 +763,10 @@ var dragularService = function ( $rootScope, $compile ) {
 					if ( horizontal && rect.left > x ) {
 						return el;
 					}
-					if ( !horizontal && rect.top > y ) {
+					if ( !mixed && !horizontal && rect.top > y ) {
+						return el;
+					}
+					if ( mixed && ( rect.left + rect.width ) > x && ( rect.top + rect.height ) > y ) {
 						return el;
 					}
 				}
@@ -771,6 +775,14 @@ var dragularService = function ( $rootScope, $compile ) {
 
 			function inside() { // faster, but only available if dropped inside a child element
 				var rect = target.getBoundingClientRect();
+				if ( mixed ) {
+					var distToTop = y - rect.top;
+					var distToLeft = x - rect.left;
+					var distToBottom = rect.bottom - y;
+					var distToRight = rect.right - x;
+					var minDist = Math.min( distToLeft, distToRight, distToTop, distToBottom );
+					return resolve( distToLeft === minDist || distToTop === minDist );
+				}
 				if ( horizontal ) {
 					return resolve( x > rect.left + getRectWidth( rect ) / 2 );
 				}
